@@ -1,0 +1,66 @@
+﻿@model CyberArena.Models.Player
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Player</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Nickname)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nickname)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Discipline)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Discipline)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MMR)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MMR)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TeamID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TeamID)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.PlayerID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
