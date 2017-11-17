@@ -14,6 +14,8 @@ namespace CyberArena.Models
         public string Discipline { get; set; }
         public int MMR { get; set; }
         public int TeamID { get; set; }
+
+        //public virtual Team Team { get; set; }
         
     }
 }

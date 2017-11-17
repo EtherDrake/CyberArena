@@ -50,4 +50,3 @@ D:\Vicktor\-=Navchannya=-\4 kurs\Projects\CyberArena\CyberArena\bin\ru\System.We
 D:\Vicktor\-=Navchannya=-\4 kurs\Projects\CyberArena\CyberArena\obj\Debug\CyberArena.csproj.CoreCompileInputs.cache
 D:\Vicktor\-=Navchannya=-\4 kurs\Projects\CyberArena\CyberArena\obj\Debug\CyberArena.dll
 D:\Vicktor\-=Navchannya=-\4 kurs\Projects\CyberArena\CyberArena\obj\Debug\CyberArena.pdb
-D:\Vicktor\-=Navchannya=-\4 kurs\Projects\CyberArena\CyberArena\obj\Debug\CyberArena.csprojResolveAssemblyReference.cache
