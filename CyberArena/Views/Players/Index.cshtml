@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CyberArena.Models.Player>
+﻿@model IEnumerable<CyberArena.Models.PlayerView>
 
 @{
     ViewBag.Title = "Index";
@@ -8,6 +8,14 @@
 
 <p>
     @Html.ActionLink("Create New", "Create")
+    @using (Html.BeginForm("Index", "Players", FormMethod.Get))
+    {
+    <p>
+        Nickname: @Html.TextBox("SearchString") <br />
+        <input type="submit" value="Filter" />
+    </p>
+    }
+
 </p>
 <table class="table">
     <tr>
@@ -27,7 +35,7 @@
             @Html.DisplayNameFor(model => model.MMR)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.TeamID)
+            @Html.DisplayNameFor(model => model.Team)
         </th>
         <th></th>
     </tr>
@@ -50,7 +58,7 @@
             @Html.DisplayFor(modelItem => item.MMR)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.TeamID)
+            @Html.DisplayFor(modelItem => item.Team)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.PlayerID }) |

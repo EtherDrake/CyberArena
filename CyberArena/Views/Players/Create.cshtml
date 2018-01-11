@@ -58,8 +58,9 @@
         <div class="form-group">
             @Html.LabelFor(model => model.TeamID, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.TeamID, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.TeamID, "", new { @class = "text-danger" })
+                <!--@Html.EditorFor(model => model.TeamID, new { htmlAttributes = new { @class = "form-control" } })                
+                @Html.ValidationMessageFor(model => model.TeamID, "", new { @class = "text-danger" })-->
+                @Html.DropDownListFor(model => model.TeamID, new SelectList(ViewBag.Teams,"Value", "Text", new { htmlAttributes = new { @class = "form-control" } }))
             </div>
         </div>
 

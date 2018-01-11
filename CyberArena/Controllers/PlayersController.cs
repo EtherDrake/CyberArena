@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using CyberArena.DAL;
 using CyberArena.Models;
+using AutoMapper;
 
 namespace CyberArena.Controllers
 {
@@ -15,10 +16,28 @@ namespace CyberArena.Controllers
     {
         private ArenaContext db = new ArenaContext();
 
+        
         // GET: Players
-        public ActionResult Index()
+        public ActionResult Index(string searchString)
         {
-            return View(db.Players.ToList());
+            Mapper.Reset();
+            Mapper.Initialize(cfg => cfg.CreateMap<Player, PlayerView>()
+                .ForMember(dest => dest.Team, map=>map.MapFrom(source=> db.Teams.Find(source.TeamID).Name))
+            );
+
+            var players = from m in db.Players
+                         select m;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                players = players.Where(s => s.Nickname.Contains(searchString));
+            }
+
+
+            List<PlayerView> playersViews = Mapper.Map<List<PlayerView>>(players.ToList());
+
+
+            return View(playersViews);
         }
 
         // GET: Players/Details/5
@@ -29,16 +48,37 @@ namespace CyberArena.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Player player = db.Players.Find(id);
+            
+               
             if (player == null)
             {
                 return HttpNotFound();
             }
-            return View(player);
+
+            Mapper.Reset();
+            Mapper.Initialize(cfg => cfg.CreateMap<Player, PlayerView>()
+                .ForMember(dest => dest.Team, map => map.MapFrom(source => db.Teams.Find(source.TeamID).Name))
+            );
+
+            PlayerView playerView = Mapper.Map<PlayerView>(player);
+            return View(playerView);
+            
+            
         }
 
         // GET: Players/Create
         public ActionResult Create()
         {
+            Mapper.Reset();
+            Mapper.Initialize(cfg => cfg.CreateMap<Player, PlayerCreate>());
+
+            List<SelectListItem> items = new List<SelectListItem>();
+            List<Team> teams = db.Teams.ToList();
+            for (int i=0;i<teams.Count;i++)
+            {
+                items.Add(new SelectListItem { Text = teams[i].Name, Value = teams[i].TeamID.ToString() });
+            }
+            ViewBag.Teams = items;
             return View();
         }
 
@@ -71,6 +111,15 @@ namespace CyberArena.Controllers
             {
                 return HttpNotFound();
             }
+
+            List<SelectListItem> items = new List<SelectListItem>();
+            List<Team> teams = db.Teams.ToList();
+            for (int i = 0; i < teams.Count; i++)
+            {
+                items.Add(new SelectListItem { Text = teams[i].Name, Value = teams[i].TeamID.ToString() });
+            }
+            ViewBag.Teams = items;
+
             return View(player);
         }
 
@@ -102,7 +151,15 @@ namespace CyberArena.Controllers
             {
                 return HttpNotFound();
             }
-            return View(player);
+
+            Mapper.Reset();
+            Mapper.Initialize(cfg => cfg.CreateMap<Player, PlayerView>()
+                .ForMember(dest => dest.Team, map => map.MapFrom(source => db.Teams.Find(source.TeamID).Name))
+            );
+
+            PlayerView playerView = Mapper.Map<PlayerView>(player);
+
+            return View(playerView);
         }
 
         // POST: Players/Delete/5

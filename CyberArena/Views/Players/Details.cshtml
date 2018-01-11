@@ -1,4 +1,4 @@
-﻿@model CyberArena.Models.Player
+﻿@model CyberArena.Models.PlayerView
 
 @{
     ViewBag.Title = "Details";
@@ -51,11 +51,11 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.TeamID)
+            @Html.DisplayNameFor(model => model.Team)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.TeamID)
+            @Html.DisplayFor(model => model.Team)
         </dd>
 
     </dl>
