@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AutoMapper;
+using CyberArena.MappingSettings;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -16,6 +18,7 @@ namespace CyberArena
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            Mapper.Initialize(cfg => cfg.AddProfile<ArenaProfile>());
         }
     }
 }

@@ -155,13 +155,14 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PlayersController.cs" />
     <Compile Include="Controllers\TeamsController.cs" />
+    <Compile Include="CustomExtensions\ExtensionMethods.cs" />
     <Compile Include="DAL\ArenaContext.cs" />
     <Compile Include="DAL\ArenaInitializer.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="MappingSettings\ArenaProfile.cs" />
     <Compile Include="Models\Player.cs" />
-    <Compile Include="Models\PlayerCreate.cs" />
     <Compile Include="Models\PlayerView.cs" />
     <Compile Include="Models\Team.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

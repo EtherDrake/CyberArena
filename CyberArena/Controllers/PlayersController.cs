@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using CyberArena.DAL;
 using CyberArena.Models;
 using AutoMapper;
+using CyberArena.CustomExtensions;
 
 namespace CyberArena.Controllers
 {
@@ -20,10 +21,6 @@ namespace CyberArena.Controllers
         // GET: Players
         public ActionResult Index(string searchString)
         {
-            Mapper.Reset();
-            Mapper.Initialize(cfg => cfg.CreateMap<Player, PlayerView>()
-                .ForMember(dest => dest.Team, map=>map.MapFrom(source=> db.Teams.Find(source.TeamID).Name))
-            );
 
             var players = from m in db.Players
                          select m;
@@ -33,9 +30,7 @@ namespace CyberArena.Controllers
                 players = players.Where(s => s.Nickname.Contains(searchString));
             }
 
-
-            List<PlayerView> playersViews = Mapper.Map<List<PlayerView>>(players.ToList());
-
+            List<PlayerView> playersViews = players.ToList().Map();
 
             return View(playersViews);
         }
@@ -55,23 +50,14 @@ namespace CyberArena.Controllers
                 return HttpNotFound();
             }
 
-            Mapper.Reset();
-            Mapper.Initialize(cfg => cfg.CreateMap<Player, PlayerView>()
-                .ForMember(dest => dest.Team, map => map.MapFrom(source => db.Teams.Find(source.TeamID).Name))
-            );
-
-            PlayerView playerView = Mapper.Map<PlayerView>(player);
-            return View(playerView);
-            
+            PlayerView playerView = player.Map();
+            return View(playerView);          
             
         }
 
         // GET: Players/Create
         public ActionResult Create()
         {
-            Mapper.Reset();
-            Mapper.Initialize(cfg => cfg.CreateMap<Player, PlayerCreate>());
-
             List<SelectListItem> items = new List<SelectListItem>();
             List<Team> teams = db.Teams.ToList();
             for (int i=0;i<teams.Count;i++)
@@ -87,10 +73,12 @@ namespace CyberArena.Controllers
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PlayerID,LastName,FirstName,Nickname,Discipline,MMR,TeamID")] Player player)
+        public ActionResult Create([Bind(Include = "PlayerID,LastName,FirstName,Nickname,Discipline,MMR,TeamID")] PlayerView playerModel)
         {
+            Player player=new Player();
             if (ModelState.IsValid)
             {
+                player = playerModel.Map();
                 db.Players.Add(player);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -111,6 +99,7 @@ namespace CyberArena.Controllers
             {
                 return HttpNotFound();
             }
+            PlayerView playerModel=player.Map();
 
             List<SelectListItem> items = new List<SelectListItem>();
             List<Team> teams = db.Teams.ToList();
@@ -120,7 +109,7 @@ namespace CyberArena.Controllers
             }
             ViewBag.Teams = items;
 
-            return View(player);
+            return View(playerModel);
         }
 
         // POST: Players/Edit/5
@@ -128,10 +117,12 @@ namespace CyberArena.Controllers
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PlayerID,LastName,FirstName,Nickname,Discipline,MMR,TeamID")] Player player)
+        public ActionResult Edit([Bind(Include = "PlayerID,LastName,FirstName,Nickname,Discipline,MMR,TeamID")] PlayerView playerModel)
         {
+            Player player = new Player();
             if (ModelState.IsValid)
             {
+                player = playerModel.Map();
                 db.Entry(player).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -152,12 +143,7 @@ namespace CyberArena.Controllers
                 return HttpNotFound();
             }
 
-            Mapper.Reset();
-            Mapper.Initialize(cfg => cfg.CreateMap<Player, PlayerView>()
-                .ForMember(dest => dest.Team, map => map.MapFrom(source => db.Teams.Find(source.TeamID).Name))
-            );
-
-            PlayerView playerView = Mapper.Map<PlayerView>(player);
+            PlayerView playerView = player.Map();
 
             return View(playerView);
         }
