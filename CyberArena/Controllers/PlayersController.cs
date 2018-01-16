@@ -16,9 +16,6 @@ namespace CyberArena.Controllers
 {
     public class PlayersController : Controller
     {
-        //private ArenaContext db = new ArenaContext();
-        //private PlayerRepository PlayerRepo=new PlayerRepository(new ArenaContext());
-        //private TeamRepository TeamRepo = new TeamRepository(new ArenaContext());
 
         private UnitOfWork unit=new UnitOfWork();
 
@@ -27,15 +24,14 @@ namespace CyberArena.Controllers
         public ActionResult Index(string searchString)
         {
 
-            var players = unit.PlayerRepository.getAll();
+            var players = unit.PlayerRepository.GetAll();
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                //players = players.Where(s => s.Nickname.Contains(searchString));
                 players = unit.PlayerRepository.FindBy(s => s.Nickname.Contains(searchString));
             }
 
-            List<PlayerView> playersViews = players.ToList().Map();
+            List<PlayerView> playersViews = players.Map<List<PlayerView>>();
 
             return View(playersViews);
         }
@@ -47,7 +43,6 @@ namespace CyberArena.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            //Player player = db.Players.Find(id);
             Player player = unit.PlayerRepository.FindByID(id);
             
                
@@ -56,7 +51,7 @@ namespace CyberArena.Controllers
                 return HttpNotFound();
             }
 
-            PlayerView playerView = player.Map();
+            PlayerView playerView = player.Map<PlayerView>();
             return View(playerView);          
             
         }
@@ -65,7 +60,7 @@ namespace CyberArena.Controllers
         public ActionResult Create()
         {
             List<SelectListItem> items = new List<SelectListItem>();
-            List<Team> teams = unit.TeamRepository.getAll().ToList();
+            List<Team> teams = unit.TeamRepository.GetAll();
             for (int i=0;i<teams.Count;i++)
             {
                 items.Add(new SelectListItem { Text = teams[i].Name, Value = teams[i].TeamID.ToString() });
@@ -84,11 +79,9 @@ namespace CyberArena.Controllers
             Player player=new Player();
             if (ModelState.IsValid)
             {
-                player = playerModel.Map();
+                player = playerModel.Map<Player>();
                 unit.PlayerRepository.Add(player);
                 unit.Save();
-                //db.Players.Add(player);
-                //db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -102,16 +95,15 @@ namespace CyberArena.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            //Player player = db.Players.Find(id);
             Player player = unit.PlayerRepository.FindByID(id);
             if (player == null)
             {
                 return HttpNotFound();
             }
-            PlayerView playerModel=player.Map();
+            PlayerView playerModel=player.Map<PlayerView>();
 
             List<SelectListItem> items = new List<SelectListItem>();
-            List<Team> teams = unit.TeamRepository.getAll().ToList();
+            List<Team> teams = unit.TeamRepository.GetAll();
             for (int i = 0; i < teams.Count; i++)
             {
                 items.Add(new SelectListItem { Text = teams[i].Name, Value = teams[i].TeamID.ToString() });
@@ -131,11 +123,9 @@ namespace CyberArena.Controllers
             Player player = new Player();
             if (ModelState.IsValid)
             {
-                player = playerModel.Map();
+                player = playerModel.Map<Player>();
                 unit.PlayerRepository.Edit(player);
                 unit.Save();
-                //db.Entry(player).State = EntityState.Modified;
-                //db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(player);
@@ -148,14 +138,13 @@ namespace CyberArena.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            //Player player = db.Players.Find(id);
             Player player = unit.PlayerRepository.FindByID(id);
             if (player == null)
             {
                 return HttpNotFound();
             }
 
-            PlayerView playerView = player.Map();
+            PlayerView playerView = player.Map<PlayerView>();
 
             return View(playerView);
         }
@@ -165,12 +154,9 @@ namespace CyberArena.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            //Player player = db.Players.Find(id);
             Player player = unit.PlayerRepository.FindByID(id);
             unit.PlayerRepository.Delete(player);
             unit.Save();
-            //db.Players.Remove(player);
-            //db.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -178,7 +164,7 @@ namespace CyberArena.Controllers
         {
             if (disposing)
             {
-                //db.Dispose();
+                unit.Dispose();
             }
             base.Dispose(disposing);
         }

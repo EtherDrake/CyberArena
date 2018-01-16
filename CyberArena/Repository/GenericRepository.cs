@@ -12,16 +12,16 @@ namespace CyberArena.Repository
     {
         public C context { get; set; }
 
-        public virtual IQueryable<T> getAll()
+        public virtual List<T> GetAll()
         {
-            IQueryable<T> query = context.Set<T>();
+            List<T> query = context.Set<T>().ToList();
             return query;
         }
 
-        public IQueryable<T> FindBy(Expression<Func<T, bool>> predicate)
+        public List<T> FindBy(Expression<Func<T, bool>> predicate)
         {
 
-            IQueryable<T> query = context.Set<T>().Where(predicate);
+            List<T> query = context.Set<T>().Where(predicate).ToList();
             return query;
         }
 

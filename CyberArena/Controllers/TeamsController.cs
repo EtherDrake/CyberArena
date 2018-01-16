@@ -14,15 +14,12 @@ namespace CyberArena.Controllers
 {
     public class TeamsController : Controller
     {
-        //private ArenaContext db = new ArenaContext();
-        //private TeamRepository TeamRepo = new TeamRepository(new ArenaContext());
         UnitOfWork unit = new UnitOfWork();
 
         // GET: Teams
         public ActionResult Index()
         {
-            //return View(db.Teams.ToList());
-            return View(unit.TeamRepository.getAll());
+            return View(unit.TeamRepository.GetAll());
         }
 
         // GET: Teams/Details/5
@@ -129,6 +126,7 @@ namespace CyberArena.Controllers
             if (disposing)
             {
                 //db.Dispose();
+                unit.Dispose();
             }
             base.Dispose(disposing);
         }
