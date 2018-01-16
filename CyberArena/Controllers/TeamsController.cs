@@ -8,27 +8,31 @@ using System.Web;
 using System.Web.Mvc;
 using CyberArena.DAL;
 using CyberArena.Models;
+using CyberArena.Repository;
 
 namespace CyberArena.Controllers
 {
     public class TeamsController : Controller
     {
-        private ArenaContext db = new ArenaContext();
+        //private ArenaContext db = new ArenaContext();
+        //private TeamRepository TeamRepo = new TeamRepository(new ArenaContext());
+        UnitOfWork unit = new UnitOfWork();
 
         // GET: Teams
         public ActionResult Index()
         {
-            return View(db.Teams.ToList());
+            //return View(db.Teams.ToList());
+            return View(unit.TeamRepository.getAll());
         }
 
         // GET: Teams/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(int id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Team team = db.Teams.Find(id);
+            Team team = unit.TeamRepository.FindByID(id);
             if (team == null)
             {
                 return HttpNotFound();
@@ -51,8 +55,10 @@ namespace CyberArena.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Teams.Add(team);
-                db.SaveChanges();
+                //db.Teams.Add(team);
+                //db.SaveChanges();
+                unit.TeamRepository.Add(team);
+                unit.Save();
                 return RedirectToAction("Index");
             }
 
@@ -60,13 +66,13 @@ namespace CyberArena.Controllers
         }
 
         // GET: Teams/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Team team = db.Teams.Find(id);
+            Team team = unit.TeamRepository.FindByID(id);
             if (team == null)
             {
                 return HttpNotFound();
@@ -83,21 +89,23 @@ namespace CyberArena.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(team).State = EntityState.Modified;
-                db.SaveChanges();
+                unit.TeamRepository.Edit(team);
+                unit.Save();
+                //db.Entry(team).State = EntityState.Modified;
+                //db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(team);
         }
 
         // GET: Teams/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(int id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Team team = db.Teams.Find(id);
+            Team team = unit.TeamRepository.FindByID(id);
             if (team == null)
             {
                 return HttpNotFound();
@@ -110,9 +118,9 @@ namespace CyberArena.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Team team = db.Teams.Find(id);
-            db.Teams.Remove(team);
-            db.SaveChanges();
+            Team team = unit.TeamRepository.FindByID(id);
+            unit.TeamRepository.Delete(team);
+            unit.Save();
             return RedirectToAction("Index");
         }
 
@@ -120,7 +128,7 @@ namespace CyberArena.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                //db.Dispose();
             }
             base.Dispose(disposing);
         }

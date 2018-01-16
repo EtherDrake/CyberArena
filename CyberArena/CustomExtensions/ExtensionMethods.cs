@@ -19,7 +19,7 @@ namespace CyberArena.CustomExtensions
             return Mapper.Map<Player>(playerModel);
         }
 
-        public static List<PlayerView> Map(this List<Player> players)
+        public static List<PlayerView> Map(this List<Player> players) //List<Player> to List <PlayerView>
         {
             return Mapper.Map<List<PlayerView>>(players.ToList());
         }
