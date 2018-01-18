@@ -8,7 +8,7 @@ namespace CyberArena.Models
 {
     public class PlayerView
     {
-        public int PlayerID { get; set; }
+        public int ID { get; set; }
 
         [Required(ErrorMessage = "Lastname is required"), RegularExpression(@"^[a-zA-z]*$", ErrorMessage = "Only alphabetical characters are allowed")]
         public string LastName { get; set; }

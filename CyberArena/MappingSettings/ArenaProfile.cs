@@ -16,7 +16,7 @@ namespace CyberArena.MappingSettings
             List<Team>teams=context.Teams.ToList();
 
             CreateMap<Player, PlayerView>()
-                .ForMember(dest => dest.Team, map => map.MapFrom(source => teams.Find(x => x.TeamID == source.TeamID).Name));
+                .ForMember(dest => dest.Team, map => map.MapFrom(source => teams.Find(x => x.ID == source.TeamID).Name));
 
             CreateMap<PlayerView, Player>();
         }

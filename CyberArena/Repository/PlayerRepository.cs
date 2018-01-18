@@ -14,11 +14,5 @@ namespace CyberArena.Repository
         {
             context = Acontext;
         }
-
-        public Player FindByID(int id)
-        {
-            var query = GetAll().FirstOrDefault(x => x.PlayerID == id);
-            return query;
-        }
     }
 }

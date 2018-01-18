@@ -11,6 +11,7 @@ namespace CyberArena.Repository
     {
         List<T> GetAll();
         List<T> FindBy(Expression<Func<T, bool>> predicate);
+        T Get(int id);
         void Add(T entity);
         void Delete(T entity);
         void Edit(T entity);

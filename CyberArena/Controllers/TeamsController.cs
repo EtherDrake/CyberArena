@@ -29,7 +29,7 @@ namespace CyberArena.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Team team = unit.TeamRepository.FindByID(id);
+            Team team = unit.TeamRepository.Get(id);
             if (team == null)
             {
                 return HttpNotFound();
@@ -48,7 +48,7 @@ namespace CyberArena.Controllers
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "TeamID,Name,Rating")] Team team)
+        public ActionResult Create([Bind(Include = "ID,Name,Rating")] Team team)
         {
             if (ModelState.IsValid)
             {
@@ -69,7 +69,7 @@ namespace CyberArena.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Team team = unit.TeamRepository.FindByID(id);
+            Team team = unit.TeamRepository.Get(id);
             if (team == null)
             {
                 return HttpNotFound();
@@ -82,7 +82,7 @@ namespace CyberArena.Controllers
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "TeamID,Name,Rating")] Team team)
+        public ActionResult Edit([Bind(Include = "ID,Name,Rating")] Team team)
         {
             if (ModelState.IsValid)
             {
@@ -102,7 +102,7 @@ namespace CyberArena.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Team team = unit.TeamRepository.FindByID(id);
+            Team team = unit.TeamRepository.Get(id);
             if (team == null)
             {
                 return HttpNotFound();
@@ -115,7 +115,7 @@ namespace CyberArena.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Team team = unit.TeamRepository.FindByID(id);
+            Team team = unit.TeamRepository.Get(id);
             unit.TeamRepository.Delete(team);
             unit.Save();
             return RedirectToAction("Index");
@@ -125,7 +125,6 @@ namespace CyberArena.Controllers
         {
             if (disposing)
             {
-                //db.Dispose();
                 unit.Dispose();
             }
             base.Dispose(disposing);

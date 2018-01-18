@@ -43,7 +43,7 @@ namespace CyberArena.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Player player = unit.PlayerRepository.FindByID(id);
+            Player player = unit.PlayerRepository.Get(id);
             
                
             if (player == null)
@@ -63,7 +63,7 @@ namespace CyberArena.Controllers
             List<Team> teams = unit.TeamRepository.GetAll();
             for (int i=0;i<teams.Count;i++)
             {
-                items.Add(new SelectListItem { Text = teams[i].Name, Value = teams[i].TeamID.ToString() });
+                items.Add(new SelectListItem { Text = teams[i].Name, Value = teams[i].ID.ToString() });
             }
             ViewBag.Teams = items;
             return View();
@@ -74,7 +74,7 @@ namespace CyberArena.Controllers
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PlayerID,LastName,FirstName,Nickname,Discipline,MMR,TeamID")] PlayerView playerModel)
+        public ActionResult Create([Bind(Include = "ID,LastName,FirstName,Nickname,Discipline,MMR,TeamID")] PlayerView playerModel)
         {
             Player player=new Player();
             if (ModelState.IsValid)
@@ -95,7 +95,7 @@ namespace CyberArena.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Player player = unit.PlayerRepository.FindByID(id);
+            Player player = unit.PlayerRepository.Get(id);
             if (player == null)
             {
                 return HttpNotFound();
@@ -106,7 +106,7 @@ namespace CyberArena.Controllers
             List<Team> teams = unit.TeamRepository.GetAll();
             for (int i = 0; i < teams.Count; i++)
             {
-                items.Add(new SelectListItem { Text = teams[i].Name, Value = teams[i].TeamID.ToString() });
+                items.Add(new SelectListItem { Text = teams[i].Name, Value = teams[i].ID.ToString() });
             }
             ViewBag.Teams = items;
 
@@ -118,7 +118,7 @@ namespace CyberArena.Controllers
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PlayerID,LastName,FirstName,Nickname,Discipline,MMR,TeamID")] PlayerView playerModel)
+        public ActionResult Edit([Bind(Include = "ID,LastName,FirstName,Nickname,Discipline,MMR,TeamID")] PlayerView playerModel)
         {
             Player player = new Player();
             if (ModelState.IsValid)
@@ -138,7 +138,7 @@ namespace CyberArena.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Player player = unit.PlayerRepository.FindByID(id);
+            Player player = unit.PlayerRepository.Get(id);
             if (player == null)
             {
                 return HttpNotFound();
@@ -154,7 +154,7 @@ namespace CyberArena.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Player player = unit.PlayerRepository.FindByID(id);
+            Player player = unit.PlayerRepository.Get(id);
             unit.PlayerRepository.Delete(player);
             unit.Save();
             return RedirectToAction("Index");

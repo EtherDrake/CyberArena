@@ -13,11 +13,5 @@ namespace CyberArena.Repository
         {
             context = Acontext;
         }
-
-        public Team FindByID(int id)
-        {
-            var query = GetAll().FirstOrDefault(x => x.TeamID == id);
-            return query;
-        }
     }
 }

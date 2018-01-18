@@ -1,4 +1,5 @@
 ﻿using CyberArena.DAL;
+using CyberArena.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -8,7 +9,7 @@ using System.Web;
 
 namespace CyberArena.Repository
 {
-    public abstract class GenericRepository<C, T>: IGenericRepository<T> where T: class where C:DbContext, new()
+    public abstract class GenericRepository<C, T>: IGenericRepository<T> where T: class, IEntity where C:DbContext, new()
     {
         public C context { get; set; }
 
@@ -20,8 +21,13 @@ namespace CyberArena.Repository
 
         public List<T> FindBy(Expression<Func<T, bool>> predicate)
         {
-
             List<T> query = context.Set<T>().Where(predicate).ToList();
+            return query;
+        }
+
+        public T Get(int id)
+        {
+            var query = GetAll().FirstOrDefault(x => x.ID == id);
             return query;
         }
 
